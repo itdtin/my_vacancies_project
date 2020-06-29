@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main class="container mt-3 pb-5">
+        <div class="row mt-5">
+      {% include 'vacancies/my_company.html' %}
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body px-4 pb-4">
+                        <section class="tab-pane fade show active">
+                            <h2 class="h4 pt-2 pb-3">Вакансии</h2>
+                            {% if request.user.companies and mycompany_vacancies|first %}
+                            <!-- vacancy state 1 -->
+                            {% for vacancy in mycompany_vacancies %}
+                                <div class="card mt-3">
+                                    <div class="card-body px-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-6 col-lg-8">
+                                                <a href="{% url 'mycompany_vacancy' pk=vacancy.id %}" class="mb-1">{{ vacancy.title }}</a>
+                                                <p class="mb-1">
+                                                    <span class="mr-4">{{ vacancy.salary_max }}</span>
+                                                    <a href="{% url 'vacancy_edit' pk=vacancy.id%}" class="text-info">{{ vacancy.applications.count }} откликов</a>
+                                                </p>
+                                            </div>
+                                            <div class="col-6 col-lg-4 text-right">
+                                                <a href="{% url 'vacancy_edit' pk=vacancy.id%}" class="btn btn-outline-info">Изменить</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- END vacancy state 1 -->
+                            {% elif request.user.companies %}
+                            <div class="alert alert-primary" role="alert">
+                                В вашей компании нет открытых вакансий
+                            </div>
+                            {% else %}
+                                <div class="alert alert-primary" role="alert">
+                                    У вас нет компании, создать?
+                                    <a href="{% url 'mycompany' %}">Создать компанию</a>
+                                </div>
+                            {% endif %}
+                        </section>
+                    <a href="{% url 'vacancy_create' %}" class="btn btn-info mt-3">Добавить вакансию</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

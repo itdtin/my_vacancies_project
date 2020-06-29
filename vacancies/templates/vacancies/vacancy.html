@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main class="container mt-3 pb-5">
+    <div class="row mt-5">
+      <div class="col-12 col-lg-2">
+        <div class="pl-3 mb-5">
+            {% if request.META.HTTP_REFERER %}
+          <p><a href="{{ request.META.HTTP_REFERER }}">Назад</a></p>
+            {% endif %}
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <section class="pl-3">
+          <a href="{% url 'company' pk=object.company.id %}"><img src="{{ object.company.logo.url }}" width="130" height="80" alt=""></a>
+          <div class="d-flex align-items-baseline align-content-baseline">
+            <h1 class="h2 mt-4 font-weight-bold" >{{ object.title }}</h1>
+            <p class="m-0 pl-3">{{ object.salary_min }} – {{ object.salary_max }} Р</p>
+          </div>
+          <p class="mt-2">{{ object.specialty.title }} • {{ object.skills }}</p>
+          <p class="text-muted mb-4">{{ object.company.name }}
+              ({{ object.company.employee_count }} человек), {{ object.company.location }} или удаленно</p>
+          <div style="line-height: 1.8;">
+            {{ object.description }}
+          </div>
+        {% if request.user.is_authenticated %}
+          <form action="" method="post" class="card mt-4 mb-3">{% csrf_token %}
+            <div class="card-body mx-3">
+              <p class="h5 mt-3 font-weight-normal">Отозваться на вакансию</p>
+                {% for field in form %}
+                    <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Отправить откликк</button>
+            </div>
+          </form>
+        {% else %}
+            <p class="alert alert-info" role="alert"><a href="login">Войдите</a> или <a href="signup">зарегистрируйтесь</a>, чтобы отправить отклик на вакансию.</p>
+        {% endif %}
+        </section>
+      </div>
+    </div>
+  </main>
+{% endblock %}
