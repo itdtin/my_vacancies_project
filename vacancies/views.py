@@ -245,6 +245,7 @@ class EditVacancyView(View):
         form.save(commit=False)
         self.context['form'] = form
         self.context['vacancy'] = vacancy
+        print(vacancy.applications)
         return render(request, template_name=self.template_name, context=self.context)
 
     def post(self, request, pk):
