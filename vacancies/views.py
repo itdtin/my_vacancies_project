@@ -260,6 +260,6 @@ class EditVacancyView(View):
 
 
 class DeleteVacancyView(View):
-    def get(self, pk):
+    def get(self, request, pk):
         Vacancy.objects.filter(id=pk).delete()
         return redirect('mycompany_vacancies')
